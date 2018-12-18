@@ -1,0 +1,26 @@
+## 执行命令
+
+
+#### 新建文件夹
+hadoop fs -mkdir /user/11899517/input
+
+#### 查看文件夹
+hadoop fs -ls /user/11899517
+
+#### 删除文件夹
+hadoop fs -rm -r -skipTrash /user/11899517/input
+/user/11899517/input 是文件路径，删除操作建议用绝对路径
+
+#### 从服务器上传到hdfs
+hadoop fs -copyFromLocal  17monipdb.dat  /user/11899517/resource/
+17monipdb.dat 需要上传的文件路径
+/user/11899517/resource/  上传后的文件夹存放路径
+
+#### 不同终端赋复制文件，带密钥
+sudo scp -i /home/qly/.ssh/11899517 /home/qly/workspace/had1205/17monipdb.dat  11899517@10.173.32.4:/mnt/home/11899517/
+
+#### 运行jar包的路径
+hadoop jar had121801.jar com.bigdata.etl.job.ParseLogJob /user/11899517/input /user/11899517/output
+
+
+
