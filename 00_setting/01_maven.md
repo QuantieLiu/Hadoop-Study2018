@@ -34,8 +34,11 @@
 
 找到有<profile>标签的地方，加上如下配置：
 <profile>
+
 <id>jdk-1.8</id>    
+
     <activation>  
+
         <activeByDefault>true</activeByDefault>    
         <jdk>1.8</jdk>    
     </activation>    
@@ -45,3 +48,4 @@
         <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>    
     </properties>    
 </profile>
+
