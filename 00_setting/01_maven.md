@@ -33,9 +33,10 @@
 ##### 本地maven仓库配置的settings.xml文件中添加配置
 
 找到有<profile>标签的地方，加上如下配置：
-<profile>
+       
+       <profile>
 
-<id>jdk-1.8</id>    
+       <id>jdk-1.8</id>    
 
     <activation>  
 
@@ -47,5 +48,5 @@
         <maven.compiler.target>1.8</maven.compiler.target>    
         <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>    
     </properties>    
-</profile>
+        </profile>
 
