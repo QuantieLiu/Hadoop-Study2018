@@ -1,8 +1,9 @@
 ### 设置JDK版本
 
 ##### POM文件中添加配置
-<build>
 
+'''
+<build>
        <plugins>
 
            <plugin>
@@ -28,6 +29,7 @@
        </plugins>
 
     </build>
+'''
 
 
 ##### 本地maven仓库配置的settings.xml文件中添加配置
