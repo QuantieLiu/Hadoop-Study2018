@@ -2,7 +2,7 @@
 
 ##### POM文件中添加配置
 
-'''
+```  
 <build>
        <plugins>
 
@@ -29,13 +29,13 @@
        </plugins>
 
     </build>
-'''
+```  
 
 
 ##### 本地maven仓库配置的settings.xml文件中添加配置
 
 找到有<profile>标签的地方，加上如下配置：
-       
+ ```   
        <profile>
 
               <id>jdk-1.8</id>    
@@ -51,4 +51,4 @@
                <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>    
            </properties>    
         </profile>
-
+```  
