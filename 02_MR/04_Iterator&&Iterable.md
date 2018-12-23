@@ -1,0 +1,1 @@
+Java集合类的基本接口是Collection接口。而Collection接口必须继承java.lang.Iterable接口
