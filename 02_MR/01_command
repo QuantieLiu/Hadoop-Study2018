@@ -16,6 +16,11 @@ hadoop fs -copyFromLocal  17monipdb.dat  /user/11899517/resource/
 17monipdb.dat 需要上传的文件路径
 /user/11899517/resource/  上传后的文件夹存放路径
 
+#### 从hdfs下载到服务器
+hadoop fs -copyToLocal /home/qly/hadoop/output-try ~ 
+/home/qly/hadoop/output-try 是hdfs的文件路径
+~ 是当前用户的主目录
+
 #### 不同终端赋复制文件，带密钥
 sudo scp -i /home/qly/.ssh/11899517 /home/qly/workspace/had1205/17monipdb.dat  11899517@10.173.32.4:/mnt/home/11899517/
 
