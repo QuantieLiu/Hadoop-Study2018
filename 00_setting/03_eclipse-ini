@@ -1,6 +1,45 @@
 #### Eclipse经常出现OutOfMemoryError
-##### 1
+##### 
 
 ```  
-Ecplise因为是ide，涉及大量的class的重新build，每次build，classloader会重新加载此class，而老的class，没有被卸载，同时JVM不会垃圾回收此class（据说是因为classloader本身有内存泄露，也许是classloader仍然对改class进行了引用，因此，这类class不会被unload），因此，可以设置较大的PermSize，因为Class是分配在Perm space里面的。但是这种办法只能延长OutOfMemory的时间，因为class的重新装载迟早会造成永久代的内存溢出，这种情况在产品线上应该不会出现，一般产品线上重新部署程序时，都要求重启JVM的，所以问题不大。
+Ecplise因为是ide，涉及大量的class的重新build，每次build，classloader会重新加载此class，而老的class，没有被卸载，
+同时JVM不会垃圾回收此class（据说是因为classloader本身有内存泄露，也许是classloader仍然对改class进行了引用，因此，这类class不会被unload），
+因此，可以设置较大的PermSize，因为Class是分配在Perm space里面的。但是这种办法只能延长OutOfMemory的时间，
+因为class的重新装载迟早会造成永久代的内存溢出，这种情况在产品线上应该不会出现，一般产品线上重新部署程序时，都要求重启JVM的，所以问题不大。
+
+因为eclipse经常跟本地的其它应用程序一起运行，OS的内存会把分配给其它应用程序，为了避免应用程序抢走JVM的内存，
+通常我们在设置堆大小时，有初始化堆的大小和最大堆的大小，在JVM启动时，JVM会向OS申请初始化堆大小的内存空间，
+只有当堆内存不足时，JVM才会想OS请求内存直到Xmx为止，当内存被其它应用程序占用时，JVM往往申请不到内存，这很容易堆内存溢出，
+因为，此时堆大小已经不能再扩展了。因此，所以把xmx=xmn设置成一样大，可以避免内存被其它进程抢走。  
 ```  
+
+### 堆大小设置
+<li>java -Xmx3550m -Xms3550m -Xmn2g -Xss128k
+
+```  
+-Xmx3550m：设置JVM最大可用内存为3550M。
+-Xms3550m：设置JVM促使内存为3550m。
+此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。
+-Xmn2g：设置年轻代大小为2G。
+整个JVM内存大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。
+此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8。
+-Xss128k：设置每个线程的堆栈大小。
+JDK5.0以后每个线程堆栈大小为1M，以前每个线程堆栈大小为256K。更具应用的线程所需内存大小进行调整。
+在相同物理内存下，减小这个值能生成更多的线程。但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。
+```  
+
+<li>java -Xmx3550m -Xms3550m -Xss128k -XX:NewRatio=4 -XX:SurvivorRatio=4 -XX:MaxPermSize=16m -XX:MaxTenuringThreshold=0
+
+```  
+-XX:NewRatio=4:设置年轻代（包括Eden和两个Survivor区）与年老代的比值（除去持久代）。
+设置为4，则年轻代与年老代所占比值为1：4，年轻代占整个堆栈的1/5
+-XX:SurvivorRatio=4：设置年轻代中Eden区与Survivor区的大小比值。
+设置为4，则两个Survivor区与一个Eden区的比值为2:4，一个Survivor区占整个年轻代的1/6
+-XX:MaxPermSize=16m:设置持久代大小为16m。
+-XX:MaxTenuringThreshold=0：设置垃圾最大年龄。
+如果设置为0的话，则年轻代对象不经过Survivor区，直接进入年老代。
+对于年老代比较多的应用，可以提高效率。
+如果将此值设置为一个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象再年轻代的存活时间，增加在年轻代即被回收的概论。
+```  
+
+
