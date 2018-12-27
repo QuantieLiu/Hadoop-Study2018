@@ -1,0 +1,6 @@
+#### Eclipse经常出现OutOfMemoryError
+##### 1
+
+```  
+Ecplise因为是ide，涉及大量的class的重新build，每次build，classloader会重新加载此class，而老的class，没有被卸载，同时JVM不会垃圾回收此class（据说是因为classloader本身有内存泄露，也许是classloader仍然对改class进行了引用，因此，这类class不会被unload），因此，可以设置较大的PermSize，因为Class是分配在Perm space里面的。但是这种办法只能延长OutOfMemory的时间，因为class的重新装载迟早会造成永久代的内存溢出，这种情况在产品线上应该不会出现，一般产品线上重新部署程序时，都要求重启JVM的，所以问题不大。
+```  
