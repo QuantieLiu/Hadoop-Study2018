@@ -1,8 +1,0 @@
-
-
-
-#### 解压
-tar zxf hadoop-2.7.6.tar.gz
-
-#### 创建软链接指向某某文件夹
-ln -s hadoop-2.7.6 hadoop-current
