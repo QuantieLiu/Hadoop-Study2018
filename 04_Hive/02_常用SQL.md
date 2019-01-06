@@ -419,23 +419,164 @@ OK
 Time taken: 67.55 seconds, Fetched: 5 row(s)
 ``` 
 
-#### 
+#### 窗口函数
+<li>多行输入，多行输出，包含所在分组信息
 
+``` 
+--下单用户路径分析
+####从哪个页面着陆  -- 窗口内排序或偏移量
+####下单前最后页面  -- 窗口内偏移量
+####下单之前浏览多少个页面  -- 窗口内聚合
+
+Function(arg1,...argn)  OVER([PARTITION BY<...>] [ORDER BY<...>] [window_clause])
+偏移量函数 First_value/Last_value Lead/Lag
+聚合函数 COUNT/SUM AVG/MIN/MAX
+排序函数 ROW_NUMBER() RANK() DENSE_RANK()
 ``` 
 
 ``` 
+--窗口范围
+hive> SELECT user_id,session_id,landing_page,last_page,count_visit 
+    > FROM
+    > (SELECT 
+    > user_id,
+    > session_id,
+    > active_name,
+    > first_value(req_url) over (partition by session_id order by time_tag asc) as landing_page,
+    > lag(req_url,1) over (partition by session_id order by time_tag asc) as last_page,
+    > count(if(active_name = 'pageview',req_url,null)) over (partition by session_id order by time_tag asc rows between unbounded preceding and current row) as count_visit
+    > from bigdata.weblog ) t1
+    > where active_name = 'order' limit 5;
+Query ID = 11899517_20190106220951_bfa870e8-5433-4f92-824e-84ef445f9c6c
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21454, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21454/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21454
+Hadoop job information for Stage-1: number of mappers: 2; number of reducers: 1
+2019-01-06 22:09:58,868 Stage-1 map = 0%,  reduce = 0%
+2019-01-06 22:10:04,126 Stage-1 map = 50%,  reduce = 0%, Cumulative CPU 1.35 sec
+2019-01-06 22:10:11,339 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 13.41 sec
+2019-01-06 22:10:13,386 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 18.2 sec
+MapReduce Total cumulative CPU time: 18 seconds 200 msec
+Ended Job = job_1535253853575_21454
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 2  Reduce: 1   Cumulative CPU: 18.2 sec   HDFS Read: 156638133 HDFS Write: 753 SUCCESS
+Total MapReduce CPU Time Spent: 18 seconds 200 msec
+OK
+0911531897102177	00139537ff9c4538af543724872bebc3	http://www.bigdataclass.com/product/1527235438746733	http://www.bigdataclass.com/product/1527235438746948	18
+9511531897261655	001665d33b2943478ee9b490bb589b05	http://www.bigdataclass.com/category	http://www.bigdataclass.com/product/1527235438749767	18
+6641531897118281	001a9d543d7c4d7e94fcf4eed53b579e	http://www.bigdataclass.com/my/6641531897118281	http://www.bigdataclass.com/product/1527235438747370	15
+9011531897335411	00389d719b9a4c719bade3881142597c	http://www.bigdataclass.com/category	http://www.bigdataclass.com/product/1527235438746948	13
+9921531897309712	00395e8bed5448e491330d0e447c246b	http://www.bigdataclass.com/my/9921531897309712	http://www.bigdataclass.com/product/1527235438747744	18
+Time taken: 22.67 seconds, Fetched: 5 row(s)
+``` 
 
+#### 行转列 列转行(聚合函数的一种)
 
-#### 
-
+``` 
+### collect_set 不插入重复记录
+### collect_list 保留重复记录
 ``` 
 
 ``` 
+--
+hive> SELECT user_id,collect_set(product_id),collect_list(product_id)
+    > FROM bigdata.orders
+    > GROUP BY user_id limit 10;
+Query ID = 11899517_20190106221416_2e4036c3-a532-4dd0-92c6-b0c886188063
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21456, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21456/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21456
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2019-01-06 22:14:24,229 Stage-1 map = 0%,  reduce = 0%
+2019-01-06 22:14:29,502 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.6 sec
+2019-01-06 22:14:35,741 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.3 sec
+MapReduce Total cumulative CPU time: 6 seconds 300 msec
+Ended Job = job_1535253853575_21456
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.3 sec   HDFS Read: 2064753 HDFS Write: 510 SUCCESS
+Total MapReduce CPU Time Spent: 6 seconds 300 msec
+OK
+0001528166031761	["1527235438747744"]	["1527235438747744"]
+0001531897281376	["1527235438746891"]	["1527235438746891"]
+0001531897292909	["1527235438750711"]	["1527235438750711"]
+0001531897299559	["1527235438750618"]	["1527235438750618"]
+0001531897444689	["1527235438750087"]	["1527235438750087"]
+0001531898180216	["1527235438750087"]	["1527235438750087"]
+0001531898269760	["1527235438747610"]	["1527235438747610"]
+0001531898480773	["1527235438748507"]	["1527235438748507"]
+0011528165930044	["1527235438748829"]	["1527235438748829"]
+0011528165983913	["1527235438746782"]	["1527235438746782"]
+Time taken: 19.963 seconds, Fetched: 10 row(s)
+``` 
 
-
-
-#### 
+#### 用户画像
+<li>建立key-value中间表，分组计算各字段，列转行，存入中间表，中间表 行转列 为大宽表
 
 ``` 
+--建中间表
+hive> CREATE EXTERNAL TABLE IF NOT EXISTS `bigdata.user_tag_value`(
+    > `user_id` string COMMENT '用户id',
+    > `tag` string COMMENT '标签',
+    > `value` string COMMENT '标签值')
+    > PARTITIONED BY(
+    > `module` string COMMENT '标签模块')
+    > ROW FORMAT SERDE
+    > 'org.openx.data.jsonserde.JsonSerDe'
+    > STORED AS INPUTFORMAT
+    > 'org.apache.hadoop.mapred.TextInputFormat'
+    > OUTPUTFORMAT
+    > 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+    > LOCATION
+    > '/user/11899517/hive/user_profile/tag_value';
+OK
+Time taken: 0.136 seconds
+
+--建立标签表
+hive> CREATE EXTERNAL TABLE IF NOT EXISTS `bigdata.user_profile`(
+    > `user_id` string COMMENT '用户id',
+    > `profile` string COMMENT '用户标签')
+    > ROW FORMAT SERDE
+    > 'org.openx.data.jsonserde.JsonSerDe'
+    > STORED AS INPUTFORMAT
+    > 'org.apache.hadoop.mapred.TextInputFormat'
+    > OUTPUTFORMAT
+    > 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+    > LOCATION
+    > '/user/11899517/hive/user_profile/user_profile';
+OK
+Time taken: 0.064 seconds
+``` 
+
+``` 
+--计算各字段，存入中间表
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ``` 
