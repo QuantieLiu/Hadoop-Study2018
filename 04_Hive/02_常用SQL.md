@@ -298,16 +298,125 @@ hive> CREATE EXTERNAL TABLE IF NOT EXISTS `bigdata.orders`(
     > '/user/11899517/hive/orders';
 OK
 Time taken: 0.041 seconds
-hive> 
-
-
+hive> SELECT T2.gender,count(T1.USER_ID) as count_order,sum(pay_amount) as sum_amount,avg(pay_amount) as avg_amount
+    > FROM
+    > (SELECT user_id,pay_amount from bigdata.orders )t1
+    > join
+    > (SELECT user_id,gender from bigdata.menber) t2
+    > on T1.USER_ID = T2.USER_ID
+    > GROUP BY gender;
+Query ID = 11899517_20190106215403_eab343cd-a743-44a1-81c7-0bc71f458c55
+Total jobs = 1
+Execution log at: /tmp/11899517/11899517_20190106215403_eab343cd-a743-44a1-81c7-0bc71f458c55.log
+2019-01-06 21:54:07	Starting to launch local task to process map join;	maximum memory = 508559360
+2019-01-06 21:54:08	Dump the side-table for tag: 0 with group count: 15104 into file: file:/mnt/home/11899517/hivefile/tmpdir/11899517/f45b52e5-8b16-4978-903d-ade781a85356/hive_2019-01-06_21-54-03_872_4633236082702098128-1/-local-10004/HashTable-Stage-2/MapJoin-mapfile30--.hashtable
+2019-01-06 21:54:08	Uploaded 1 File to: file:/mnt/home/11899517/hivefile/tmpdir/11899517/f45b52e5-8b16-4978-903d-ade781a85356/hive_2019-01-06_21-54-03_872_4633236082702098128-1/-local-10004/HashTable-Stage-2/MapJoin-mapfile30--.hashtable (652905 bytes)
+2019-01-06 21:54:08	End of local task; Time Taken: 1.504 sec.
+Execution completed successfully
+MapredLocal task succeeded
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21446, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21446/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21446
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2019-01-06 21:54:16,699 Stage-2 map = 0%,  reduce = 0%
+2019-01-06 21:54:21,895 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 4.75 sec
+2019-01-06 21:54:29,200 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 7.23 sec
+MapReduce Total cumulative CPU time: 7 seconds 230 msec
+Ended Job = job_1535253853575_21446
+MapReduce Jobs Launched: 
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 7.23 sec   HDFS Read: 4830168 HDFS Write: 78 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 230 msec
+OK
+女	7635	474593.0	62.16018336607728
+男	7469	464502.0	62.19065470611862
+Time taken: 26.392 seconds, Fetched: 2 row(s)
 ``` 
 
-
-#### 
+#### 正则表达式
 
 ``` 
+商品访问量,从req_url中提取商品id并统计数量
+1 检查一个串是否含有某种子串  A regexp '[0-9]+'
+2 将匹配的子串替换           regexp_replace(A,'[0-9]+','')
+3 从某个串中取出符合某个条件的子串  regexp_extract(A,'([0-9]+)',1)
+``` 
 
+``` 
+--统计商品访问量最高的几种商品
+hive> SELECT regexp_extract(req_url,'.*/product/([0-9]+).*',1) as product_id,count(DISTINCT user_id) as count_user
+    > FROM bigdata.weblog WHERE active_name = 'pageview' GROUP BY regexp_extract(req_url,'.*/product/([0-9]+).*',1)
+    > sort BY count_user DESC limit 5;
+Query ID = 11899517_20190106215818_3e02ab81-1c9f-46d7-92b1-3e237411668f
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21450, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21450/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21450
+Hadoop job information for Stage-1: number of mappers: 2; number of reducers: 1
+2019-01-06 21:58:25,583 Stage-1 map = 0%,  reduce = 0%
+2019-01-06 21:58:30,779 Stage-1 map = 50%,  reduce = 0%, Cumulative CPU 2.33 sec
+2019-01-06 21:58:42,136 Stage-1 map = 79%,  reduce = 17%, Cumulative CPU 24.83 sec
+2019-01-06 21:58:44,188 Stage-1 map = 100%,  reduce = 17%, Cumulative CPU 28.76 sec
+2019-01-06 21:58:46,244 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 32.61 sec
+MapReduce Total cumulative CPU time: 32 seconds 610 msec
+Ended Job = job_1535253853575_21450
+Launching Job 2 out of 3
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21451, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21451/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21451
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2019-01-06 21:58:54,084 Stage-2 map = 0%,  reduce = 0%
+2019-01-06 21:58:59,278 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 1.4 sec
+2019-01-06 21:59:04,444 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 3.21 sec
+MapReduce Total cumulative CPU time: 3 seconds 210 msec
+Ended Job = job_1535253853575_21451
+Launching Job 3 out of 3
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21452, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21452/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21452
+Hadoop job information for Stage-3: number of mappers: 1; number of reducers: 1
+2019-01-06 21:59:13,324 Stage-3 map = 0%,  reduce = 0%
+2019-01-06 21:59:18,483 Stage-3 map = 100%,  reduce = 0%, Cumulative CPU 1.31 sec
+2019-01-06 21:59:24,645 Stage-3 map = 100%,  reduce = 100%, Cumulative CPU 3.21 sec
+MapReduce Total cumulative CPU time: 3 seconds 210 msec
+Ended Job = job_1535253853575_21452
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 2  Reduce: 1   Cumulative CPU: 32.61 sec   HDFS Read: 156636383 HDFS Write: 3837 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 3.21 sec   HDFS Read: 8097 HDFS Write: 265 SUCCESS
+Stage-Stage-3: Map: 1  Reduce: 1   Cumulative CPU: 3.21 sec   HDFS Read: 4800 HDFS Write: 91 SUCCESS
+Total MapReduce CPU Time Spent: 39 seconds 30 msec
+OK
+	10031
+1527235438747497	697
+1527235438749547	682
+1527235438747427	679
+1527235438751281	672
+Time taken: 67.55 seconds, Fetched: 5 row(s)
 ``` 
 
 #### 
