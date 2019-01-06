@@ -35,4 +35,53 @@ FAILED: ParseException line 1:36 cannot recognize input near ''bigdata.weblog'' 
 ``` 
 
 
+#### 权限问题只能建bigdata数据库
 
+``` 
+hive> create database if not exists bigdataqly;
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. MetaException(message:Got exception: org.apache.hadoop.security.AccessControlException Permission denied: user=11899517, access=WRITE, inode="/user/hive/warehouse":hadoop:supergroup:drwxr-xr-x
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.check(FSPermissionChecker.java:308)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:214)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:190)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1752)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:1736)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkAncestorAccess(FSDirectory.java:1719)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirMkdirOp.mkdirs(FSDirMkdirOp.java:69)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.mkdirs(FSNamesystem.java:3872)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.mkdirs(NameNodeRpcServer.java:984)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.mkdirs(ClientNamenodeProtocolServerSideTranslatorPB.java:634)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:616)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:982)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2217)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2213)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1758)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2213)
+)
+``` 
+#### 
+
+``` 
+
+``` 
+
+#### 
+
+``` 
+
+``` 
+
+#### 
+
+``` 
+
+``` 
+
+
+#### 
+
+``` 
+
+``` 
