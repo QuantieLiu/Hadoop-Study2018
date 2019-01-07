@@ -122,7 +122,8 @@ hive> CREATE EXTERNAL TABLE IF NOT EXISTS `bigdata.weblog1` (
 FAILED: SemanticException Cannot find class 'org.oapach.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
 ``` 
 
-#### missing ) at 'as' near '<EOF>'
+#### missing ) at 'as' near '<EOF>'------)数量不对
+<li> map('key','register_day','value',from_unixtime(cast(register_time / 1000) as bigint),'yyyy-MM-dd'))处的register_time / 1000 后面直接as 不需要 ）
 
 ``` 
 hive> SELECT user_id,mp['key'],mp['value'] FROM
