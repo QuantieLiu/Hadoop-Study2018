@@ -601,13 +601,83 @@ Time taken: 16.284 seconds
 
 
 
+--计算 首次下单时间 最近下单时间 下单次数 下单余额
+INSERT overwrite table bigdata.user_tag_value partition(module = 'consume_info')
+SELECT user_id,mp['key'],mp['value']
+FROM
+(SELECT user_id,
+array(map('key','first_order_time','value',min(order_time)),
+map('key','last_order_time','value',max(order_time)),
+map('key','order_count','value',count(1)),
+map('key','order_sum','value',sum(pay_amount))
+) as arr 
+FROM
+bigdata.orders
+GROUP BY
+user_id
+) s lateral view explode(arr) arrtable as mp;
+
+INSERT结果：Time taken: 22.334 seconds, Fetched: 60416 row(s)
+hive> SELECT user_id,mp['key'],mp['value']
+    > FROM
+    > (SELECT user_id,
+    > array(map('key','first_order_time','value',min(order_time)),
+    > map('key','last_order_time','value',max(order_time)),
+    > map('key','order_count','value',count(1)),
+    > map('key','order_sum','value',sum(pay_amount))
+    > ) as arr 
+    > FROM
+    > bigdata.orders
+    > GROUP BY
+    > user_id
+    > ) s lateral view explode(arr) arrtable as mp limit 10;
+Query ID = 11899517_20190107212752_3e67814a-9e6c-4cbb-8ecb-6d99b0396fa3
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21562, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21562/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21562
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2019-01-07 21:27:59,336 Stage-1 map = 0%,  reduce = 0%
+2019-01-07 21:28:04,638 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.6 sec
+2019-01-07 21:28:10,849 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 7.2 sec
+MapReduce Total cumulative CPU time: 7 seconds 200 msec
+Ended Job = job_1535253853575_21562
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 7.2 sec   HDFS Read: 2067731 HDFS Write: 411 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 200 msec
+OK
+0001528166031761	first_order_time	1527578321393
+0001528166031761	last_order_time	1527578321393
+0001528166031761	order_count	1
+0001528166031761	order_sum	40.0
+0001531897281376	first_order_time	1527642284658
+0001531897281376	last_order_time	1527642284658
+0001531897281376	order_count	1
+0001531897281376	order_sum	64.0
+0001531897292909	first_order_time	1527639077523
+0001531897292909	last_order_time	1527639077523
+Time taken: 19.798 seconds, Fetched: 10 row(s)
 
 
+--地理位置信息
+INSERT overwrite table bigdata.user_tag_value partition(module = 'geography_info')
+SELECT user_id,'province' as key , province
+FROM(SELECT user_id,row_number() over (partition by user_id order by time_tag desc ) as order_rank,adress['province'] as province
+FROM bigdata.weblog
+WHERE active_name = 'pay') t1
+WHERE order_rank =1 limit 20;
 
 
+``` 
 
 
-
-
+``` 
 
 ``` 
