@@ -170,8 +170,21 @@ FAILED: ParseException line 8:72 extraneous input ')' expecting AS near '<EOF>'
 ``` 
 
 
-#### 
+#### Invalid table alias or column reference 'key':
 
 ``` 
-
+hive> SELECT user_id,mp[`key`],mp[`value`]
+    > FROM
+    > (SELECT user_id,
+    > array(map('key','first_order_time','value',min(order_time)),
+    > map('key','last_order_time','value',max(order_time)),
+    > map('key','order_count','value',count(1)),
+    > map('key','order_sum','value',sum(pay_amount)))
+    > as arr 
+    > FROM
+    > bigdata.orders
+    > GROUP BY
+    > user_id
+    > ) s lateral view explode(arr) arrtable as mp;
+FAILED: SemanticException [Error 10004]: Line 1:18 Invalid table alias or column reference 'key': (possible column names are: s.user_id, s.arr, arrtable.mp)
 ``` 
