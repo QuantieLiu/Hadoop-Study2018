@@ -143,6 +143,29 @@ hive> SELECT user_id,mp['key'],mp['value'] FROM
     > FROM bigdata.menber) s lateral view explode(arr) arrtable as mp;
 FAILED: ParseException line 5:72 extraneous input ')' expecting AS near '<EOF>'
 line 5:100 missing ) at 'as' near '<EOF>'
+
+hive> SELECT user_id,mp['key'],mp['value'] FROM
+    > (SELECT 
+    > user_id,
+    > array(map('key','gender','value',gender),
+    > map('key','age','value',cast(2018-form_unixtime(cast(birthday/1000 as bigint),'yyyy') as string)),
+    > map('key','device_type','value',device_type),
+    > map('key','register_day','value',from_unixtime(cast(register_time / 1000) as bigint),'yyyy-MM-dd'))
+    > as arr 
+    > FROM bigdata.menber ) s lateral view explode(arr) arrtable as mp;
+FAILED: ParseException line 7:72 extraneous input ')' expecting AS near '<EOF>'
+line 8:0 missing ) at 'as' near '<EOF>'
+hive> INSERT overwrite table bigdata.user_tag_value partition(module = 'basic_info')
+    > SELECT user_id,mp['key'],mp['value'] FROM
+    > (SELECT 
+    > user_id,
+    > array(map('key','gender','value',gender),
+    > map('key','age','value',cast(2018-form_unixtime(cast(birthday/1000 as bigint),'yyyy') as string)),
+    > map('key','device_type','value',device_type),
+    > map('key','register_day','value',from_unixtime(cast(register_time / 1000) as bigint),'yyyy-MM-dd'))
+    > )as arr 
+    > FROM bigdata.menber ) s lateral view explode(arr) arrtable as mp;
+FAILED: ParseException line 8:72 extraneous input ')' expecting AS near '<EOF>'
 ``` 
 
 
