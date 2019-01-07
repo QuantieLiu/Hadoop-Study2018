@@ -565,8 +565,39 @@ Time taken: 0.064 seconds
 
 ``` 
 --计算各字段，存入中间表
-
-
+--计算 性别 年龄 设备类型 注册日期
+hive> INSERT overwrite table bigdata.user_tag_value partition(module = 'basic_info')
+    > SELECT user_id,mp['key'],mp['value'] FROM
+    > (SELECT 
+    > user_id,
+    > array(map('key','gender','value',gender),
+    > map('key','age','value',cast(2018-from_unixtime(cast(birthday/1000 as bigint),'yyyy') as string)),
+    > map('key','device_type','value',device_type),
+    > map('key','register_day','value',from_unixtime(cast(register_time / 1000 as bigint),'yyyy-MM-dd'))
+    > )as arr 
+    > FROM bigdata.menber ) s lateral view explode(arr) arrtable as mp;
+Query ID = 11899517_20190107133146_4bf5b13c-6c63-4e4c-973c-b1aec796d999
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1535253853575_21542, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21542/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21542
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2019-01-07 13:31:53,763 Stage-1 map = 0%,  reduce = 0%
+2019-01-07 13:32:00,137 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 6.96 sec
+MapReduce Total cumulative CPU time: 6 seconds 960 msec
+Ended Job = job_1535253853575_21542
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://bigdata0:50000/user/11899517/hive/user_profile/tag_value/module=basic_info/.hive-staging_hive_2019-01-07_13-31-46_013_7520910552980103743-1/-ext-10000
+Loading data to table bigdata.user_tag_value partition (module=basic_info)
+Partition bigdata.user_tag_value{module=basic_info} stats: [numFiles=1, numRows=120716, totalSize=7796231, rawDataSize=0]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 6.96 sec   HDFS Read: 4822266 HDFS Write: 7796331 SUCCESS
+Total MapReduce CPU Time Spent: 6 seconds 960 msec
+OK
+Time taken: 16.284 seconds
 
 
 
