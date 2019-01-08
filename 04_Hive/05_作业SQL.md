@@ -85,8 +85,50 @@ Time taken: 0.13 seconds, Fetched: 5 row(s)
 ``` 
 ============往hive表中加载数据结束===============
 
+##### user_id去重
 ``` 
-
+hive> select count(1) from (select user_id from bigdata.mrlog group by user_id)t1 ;
+Query ID = 11899517_20190108133827_6d1ff747-44df-4c0e-8424-bc57a075970c
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21649, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21649/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21649
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2019-01-08 13:38:34,524 Stage-1 map = 0%,  reduce = 0%
+2019-01-08 13:38:47,025 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 13.15 sec
+2019-01-08 13:38:53,303 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 15.62 sec
+MapReduce Total cumulative CPU time: 15 seconds 620 msec
+Ended Job = job_1535253853575_21649
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1535253853575_21650, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1535253853575_21650/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1535253853575_21650
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2019-01-08 13:39:01,218 Stage-2 map = 0%,  reduce = 0%
+2019-01-08 13:39:06,432 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 1.32 sec
+2019-01-08 13:39:12,674 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 3.43 sec
+MapReduce Total cumulative CPU time: 3 seconds 430 msec
+Ended Job = job_1535253853575_21650
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 15.62 sec   HDFS Read: 158192233 HDFS Write: 116 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 3.43 sec   HDFS Read: 4466 HDFS Write: 6 SUCCESS
+Total MapReduce CPU Time Spent: 19 seconds 50 msec
+OK
+10082
+Time taken: 46.554 seconds, Fetched: 1 row(s)
 ``` 
 
 ``` 
