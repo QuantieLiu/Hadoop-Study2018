@@ -1,6 +1,9 @@
 
+hive将该表的数据文件信息保存到metadata数据库
+
 #### 建数据库和表
 <li>尤其注意 ` 和 ' 的使用, 数据库名/表名/分区名用`,中文/包路径/数据路径用'
+<li>LOCATION 数据文件路径 支持本地目录 ‘file:////home/hjl/sunwg/’;
 
 ``` 
 hive> create database if not exists bigdata;
