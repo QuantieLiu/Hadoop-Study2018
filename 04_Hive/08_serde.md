@@ -18,11 +18,12 @@ Serialize/Deserilize
 --用途
 1 对key/value反序列化成hive table的每个列的值
 ```
-#### hive如何去处理一条记录
+#### 关于hive如何去处理一条记录的说明
 
 ```
 1 Serialize把hive使用的java object转换成能写入hdfs的字节序列，或者其他系统能识别的流文件
-2 Deserilize把字符串或者二进制流转换成hive能识别的java object对象。比如：select语句会用到Serialize对象， 把hdfs数据解析出来；insert语句会使用Deserilize，数据写入hdfs系统，需要把数据序列化。
+2 Deserilize把字符串或者二进制流转换成hive能识别的java object对象。
+  如：select语句会用到Serialize对象，把hdfs数据解析出来；insert语句会使用Deserilize，数据写入hdfs系统，需要把数据序列化。
 ```
 
 
