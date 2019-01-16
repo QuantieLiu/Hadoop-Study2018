@@ -69,6 +69,9 @@ stub程序：客户端和服务器均包含stub程序，可以看做代理程序
 <br>使用静态方法getProxy构造客户端代理对象，直接通过代理对象调用远程端的方法
   
 ```
-  public static <T> T getProxy/waitForProxy(Class<T> protocol,long clientVersion,InetSocketAddress addr, Configuration conf,SocketFactory factory) throws IOException;
+--为某个协议（java接口）实例构造服务器对象，用于客户端处理发送的请求
+public static <T> Server RPC.Builder(Configuration).build();
+--用于构造客户端代理对象（该对象实现了某个协议），用于向服务器端发送RPC请求
+public static <T> T getProxy/waitForProxy(Class<T> protocol,long clientVersion,InetSocketAddress addr, Configuration conf,SocketFactory factory) throws IOException;
 ```
   
