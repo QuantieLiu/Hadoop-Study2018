@@ -19,18 +19,21 @@ Reactor是并发编程中的一种基于事件驱动的设计模式
 
 待插入图片 16001Reactor多线程模型.png
 
-<li>主要角色划分
-
-```
-Reactor：I/O事件的派发者。
-Acceptor：接受来自Client的连接，建立与Client对应的Handler，并向Reactor注册此Handler。
-Handler：与一个Client通信的实体，并按一定的过程实现业务的处理。Handler内部往往会有更进一步的层次划分，用来抽象诸如read、decode、compute、encode和send等过程。
-         在Reactor模式中，业务逻辑被分散的I/O事件所打破，所以Handler需要有适当的机制在所需的信息还不全（读到一半）的时候保存上下文，并在下一次I/O事件到来的时候（另一半可读）能继续上次中断的处理。
-Reader/Sender：为了加速处理速度，Reactor模式往往构建一个存放数据处理线程的线程池，这样数据读出后，立即扔到线程池中等待后续处理即可。
-        为此，Reactor模式一般分离Handler中的读和写两个过程，分别注册成单独的读事件和写事件，并由对应的Reader和Sender线程处理。
-```
-
-<li>
+#### 主要角色划分
+<li>Reactor
+<br>I/O事件的派发者
+<li>Acceptor
+<br>接受来自Client的连接，建立与Client对应的Handler，并向Reactor注册此Handler
+<li>Handler
+<br>与一个Client通信的实体，并按一定的过程实现业务的处理
+<br>Handler内部往往会有更进一步的层次划分，用来抽象诸如read、decode、compute、encode和send等过程
+<br>在Reactor模式中，业务逻辑被分散的I/O事件所打破
+<br>Handler需要有适当的机制在所需的信息还不全（读到一半）的时候保存上下文，并在下一次I/O事件到来的时候（另一半可读）能继续上次中断的处理
+<li>Reader/Sender
+<br>Reactor模式往往构建一个存放数据处理线程的线程池
+<br>数据读出后，立即扔到线程池中等待后续处理即可
+<br>Reactor模式一般分离Handler中的读和写两个过程，分别注册成单独的读事件和写事件，并由对应的Reader和Sender线程处理
+         
 
 ```
 
