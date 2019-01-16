@@ -75,3 +75,8 @@ public static <T> Server RPC.Builder(Configuration).build();
 public static <T> T getProxy/waitForProxy(Class<T> protocol,long clientVersion,InetSocketAddress addr, Configuration conf,SocketFactory factory) throws IOException;
 ```
   
+<li>URL
+```
+代码-hadoop RPC功能demo
+http://blog.51cto.com/sbp810050504/1925405
+```
