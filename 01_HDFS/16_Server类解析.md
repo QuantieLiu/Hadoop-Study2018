@@ -67,3 +67,8 @@ Server端可同时存在多个Handler线程，它们并行从共享队列中读�
 Server端仅存在一个Responder线程，它的内部包含一个Selector对象，用于监听SelectionKey.OP_WRITE事件
 当Handler没能将结果一次性发送到客户端时，会向该Selector对象注册SelectionKey.OP_WRITE事件，进而由Responder线程采用异步方式继续发送未发送完成的结果
 ```
+
+```
+--Reactor延伸
+http://www.cnblogs.com/duanxz/p/3696849.html
+```
