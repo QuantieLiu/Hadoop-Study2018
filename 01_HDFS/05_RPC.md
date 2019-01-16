@@ -56,3 +56,18 @@ stub程序：客户端和服务器均包含stub程序，可以看做代理程序
 高性能：RPC Server能够并发处理多个来自Client的请求；
 可控性：jdk中已经提供了一个RPC框架—RMI，但是该PRC框架过于重量级并且可控之处比较少，所以Hadoop RPC实现了自定义的PRC框架。
 ```
+
+#### 使用步骤
+
+<li>1 定义RPC协议
+　　RPC协议是客户端和服务器端之间的通信接口，它定义了服务器端对外提供的服务接口
+<li>2 实现RPC协议
+　　Hadoop RPC协议通常是一个Java接口，用户需要实现该接口
+<li>3 构造和启动RPC SERVER
+　　直接使用静态类Builder构造一个RPC Server，并调用函数start()启动该Server
+<li>4 构造RPC Client并发送请求
+    使用静态方法getProxy构造客户端代理对象，直接通过代理对象调用远程端的方法
+```
+  public static <T> T getProxy/waitForProxy(Class<T> protocol,long clientVersion,InetSocketAddress addr, Configuration conf,SocketFactory factory) throws IOException;
+```
+  
