@@ -26,7 +26,17 @@ Serialize/Deserilize
   如：select语句会用到Serialize对象，把hdfs数据解析出来；insert语句会使用Deserilize，数据写入hdfs系统，需要把数据序列化。
 ```
 
+#### 内置类型
 
+```
+Avro
+ORC
+RegEx
+Thrift
+Parquet
+CSV
+JsonSerDe
+```
 
 
 
