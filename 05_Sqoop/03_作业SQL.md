@@ -2,6 +2,7 @@
 
 ```
 --配置HIVE_HOME环境变量
+--便于 使用 hive 命令来进入hive命令行界面
 export FLUME_HOME=/mnt/home/11899517/flume
 export HIVE_HOME=/mnt/home/11899517/hive
 export PATH=$FLUME_HOME/bin:$PATH:$HIVE_HOME/bin
