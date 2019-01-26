@@ -16,6 +16,16 @@ export PATH=$FLUME_HOME/bin:$PATH:$HIVE_HOME/bin
 </property>  
 ```
 
+```
+--把hive/lib的一下jar包copy到sqoop/lib
+-rw-r--r-- 1 11899517 11899517  290835 1月  24 13:21 hive-common-1.2.2.jar
+-rw-r--r-- 1 11899517 11899517   32242 1月  24 13:21 hive-shims-0.20S-1.2.2.jar
+-rw-r--r-- 1 11899517 11899517   59903 1月  24 13:21 hive-shims-0.23-1.2.2.jar
+-rw-r--r-- 1 11899517 11899517    8966 1月  24 13:21 hive-shims-1.2.2.jar
+-rw-r--r-- 1 11899517 11899517  109178 1月  24 13:21 hive-shims-common-1.2.2.jar
+-rw-r--r-- 1 11899517 11899517   13084 1月  24 13:21 hive-shims-scheduler-1.2.2.jar
+```
+
 #### 把mysql的product表通过sqoop导入到hive中
 <li>在sqoop的bin目录启动命令，若没有提前建库，则会在default中建表
 
