@@ -1,6 +1,14 @@
+#### 前期准备
 
+```
+--配置HIVE_HOME环境变量
+export FLUME_HOME=/mnt/home/11899517/flume
+export HIVE_HOME=/mnt/home/11899517/hive
+export PATH=$FLUME_HOME/bin:$PATH:$HIVE_HOME/bin
+```
 
-
+#### 把mysql的product表通过sqoop导入到hive中
+<li>在sqoop的bin目录启动命令，若没有提前建库，则会在default中建表
 
 ```
 [11899517@bigdata4 bin]$ ./sqoop import --connect jdbc:mysql://10.173.32.6:3306/sqoop --username root --password Gg/ru,.#5 --table product -m 1 --hive-import  --create-hive-table --hive-table  hiv_product
@@ -97,5 +105,77 @@ Sat Jan 26 10:30:18 CST 2019 WARN: Establishing SSL connection without server's 
 19/01/26 10:30:27 INFO hive.HiveImport: Hive import complete.
 19/01/26 10:30:27 INFO hive.HiveImport: Export directory is contains the _SUCCESS file only, removing the directory.
 [11899517@bigdata4 bin]$ 
+```
+
+<li>验证数据是否导入成功
+	
+```
+hive> select * from hiv_product limit 5;
+OK
+103	1527235438751484	商品1
+108	1527235438751468	商品2
+28	1527235438751389	商品3
+21	1527235438751248	商品4
+25	1527235438751118	商品5
+Time taken: 0.116 seconds, Fetched: 5 row(s)
+hive> 
+```
+
+#### 查询表中有多少个课程，允许重复
 
 ```
+hive> select count(*) from hiv_product;
+Query ID = 11899517_20190126113509_74453119-903e-458f-bf34-f0a5462e59e7
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1547603700477_1122, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1547603700477_1122/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1547603700477_1122
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2019-01-26 11:35:16,525 Stage-1 map = 0%,  reduce = 0%
+2019-01-26 11:35:21,712 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.62 sec
+2019-01-26 11:35:27,964 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.74 sec
+MapReduce Total cumulative CPU time: 3 seconds 740 msec
+Ended Job = job_1547603700477_1122
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.74 sec   HDFS Read: 9934 HDFS Write: 4 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 740 msec
+OK
+100
+Time taken: 19.74 seconds, Fetched: 1 row(s)
+hive> select count(product_id) from hiv_product;
+Query ID = 11899517_20190126113548_899ca988-9646-4917-b6c5-4aa9aa13832f
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1547603700477_1123, Tracking URL = http://bigdata0.novalocal:8088/proxy/application_1547603700477_1123/
+Kill Command = /home/hadoop/hadoop-current/bin/hadoop job  -kill job_1547603700477_1123
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2019-01-26 11:35:54,819 Stage-1 map = 0%,  reduce = 0%
+2019-01-26 11:36:00,044 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.61 sec
+2019-01-26 11:36:06,308 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.76 sec
+MapReduce Total cumulative CPU time: 3 seconds 760 msec
+Ended Job = job_1547603700477_1123
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.76 sec   HDFS Read: 10097 HDFS Write: 4 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 760 msec
+OK
+100
+Time taken: 18.468 seconds, Fetched: 1 row(s)
+hive> 
+```
+
+
+
