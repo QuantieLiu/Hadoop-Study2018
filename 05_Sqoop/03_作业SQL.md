@@ -7,6 +7,15 @@ export HIVE_HOME=/mnt/home/11899517/hive
 export PATH=$FLUME_HOME/bin:$PATH:$HIVE_HOME/bin
 ```
 
+```
+--把hive的hive_site.xml复制到sqoop的conf
+--添加hive仓库的路径参数配置
+<property>  
+  <name>hive.metastore.warehouse.dir</name>  
+  <value>hdfs://bigdata0:33601/user/11899517/hive/warehouse</value>  
+</property>  
+```
+
 #### 把mysql的product表通过sqoop导入到hive中
 <li>在sqoop的bin目录启动命令，若没有提前建库，则会在default中建表
 
