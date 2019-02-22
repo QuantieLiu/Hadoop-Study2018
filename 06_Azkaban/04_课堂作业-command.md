@@ -100,10 +100,10 @@ command=/home/hadoop/hadoop-current/bin/hadoop jar /mnt/home/11899517/had1205-di
 <li>注意maven打包时，要把非执行的job类的main方法注释
   
 ```
-public static void main(String[] args) throws Exception {
+/*public static void main(String[] args) throws Exception {
 		int res=ToolRunner.run(new Configuration(), new ParseLogJob(),args);
 		System.exit(res);
-	}
+	}*/
 ```
 
 
