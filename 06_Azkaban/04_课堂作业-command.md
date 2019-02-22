@@ -49,6 +49,39 @@ https://www.jianshu.com/p/f2310a5c38c6
 http://www.mamicode.com/info-detail-2106795.html
 ```
 
+### execute
+
+```
+[11899517@bigdata4 ~]$ hadoop fs -ls /user/11899517
+Found 10 items
+drwxr-x---   - 11899517 supergroup          0 2019-02-22 15:08 /user/11899517/azkoutput
+drwxr-x---   - 11899517 supergroup          0 2018-12-31 00:59 /user/11899517/flume_data
+drwxr-x---   - 11899517 supergroup          0 2019-01-26 10:30 /user/11899517/hive
+drwxr-x---   - 11899517 supergroup          0 2019-01-06 16:46 /user/11899517/hivetable
+drwxr-x---   - 11899517 supergroup          0 2018-12-11 12:57 /user/11899517/input
+drwxr-x---   - 11899517 supergroup          0 2019-01-08 13:29 /user/11899517/mrlogs
+drwxr-x---   - 11899517 supergroup          0 2019-01-08 13:15 /user/11899517/output
+drwxr-x---   - 11899517 supergroup          0 2018-12-16 18:03 /user/11899517/resource
+drwxr-x---   - 11899517 supergroup          0 2019-01-25 23:02 /user/11899517/sqoop_test
+drwxr-x---   - 11899517 supergroup          0 2019-01-06 20:31 /user/11899517/weblog
+[11899517@bigdata4 ~]$ hadoop fs -ls /user/11899517/azkoutput
+Found 2 items
+-rw-r-----   3 11899517 supergroup          0 2019-02-22 15:08 /user/11899517/azkoutput/_SUCCESS
+-rw-r-----   3 11899517 supergroup  158180009 2019-02-22 15:08 /user/11899517/azkoutput/part00000
+[11899517@bigdata4 ~]$ hadoop fs -copyToLocal /user/11899517/azkoutput ~
+[11899517@bigdata4 ~]$ ls
+000000_0       azkaban-plugins  flumefile         indata.txt                                  mysql-connector-java-5.1.46.jar
+17monipdb.dat  azkaban-web      flume_log         json-serde-1.3.6-jar-with-dependencies.jar  mysql-connector-java-5.1.47.jar
+all_tar        azkoutput        had1205-0222.jar  log0605-output                              part00000
+azkaban        derby.log        hive              log0605.txt                                 soft
+azkaban-exec   flume            hivefile          metastore_db          
+[11899517@bigdata4 ~]$ tail -100f part00000
+{"user_id":"9891528166064966","action_path":["http://www.bigdataclass.com/my/9891528166064966","http://www.bigdataclass.com/product/1527235438748929","http://www.bigdataclass.com/my/9891528166064966","http://www.bigdataclass.com/my/9891528166064966","http://www.bigdataclass.com/my/9891528166064966","http://www.bigdataclass.com","http://www.bigdataclass.com/product/1527235438749743","http://www.bigdataclass.com/category","http://www.bigdataclass.com","http://www.bigdataclass.com/category","http://www.bigdataclass.com/category","http://www.bigdataclass.com/category","http://www.bigdataclass.com/my/9891528166064966","http://www.bigdataclass.com/category","http://www.bigdataclass.com/product/1527235438749476","order","pay"]}
+{"user_id":"9891528166071869","action_path":["http://www.bigdataclass.com","http://www.bigdataclass.com/my/9891528166071869","http://www.bigdataclass.com/product/1527235438750625","http://www.bigdataclass.com/product/1527235438748767","http://www.bigdataclass.com","http://www.bigdataclass.com/product/1527235438747497","http://www.bigdataclass.com/category","http://www.bigdataclass.com/product/1527235438746838","http://www.bigdataclass.com/my/9891528166071869","http://www.bigdataclass.com/product/1527235438750851","http://www.bigdataclass.com/product/1527235438751468","http://www.bigdataclass.com/my/9891528166071869","http://www.bigdataclass.com/product/1527235438750851","http://www.bigdataclass.com/product/1527235438749509","http://www.bigdataclass.com/product/1527235438749547","http://www.bigdataclass.com/my/9891528166071869","http://www.bigdataclass.com/category","http://www.bigdataclass.com/product/1527235438750543","order","pay"]}
+省略很多行输出
+[11899517@bigdata4 ~]$ 
+```
+
 
 
 
