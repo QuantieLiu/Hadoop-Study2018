@@ -4,11 +4,14 @@
 
 ```
 
+## cmd01为例
+
 ### job文件
 <li>新建空白文档，以.job后缀，内容如下
 <li>window系统压缩,只能是zip格式
 
 ```
+# cmd01.job
 # distinctUserId
 type=command
 command=/home/hadoop/hadoop-current/bin/hadoop jar /mnt/home/11899517/had1205-0222.jar com.bigdata.etl.job.ParseLogJob /user/11899517/input /user/11899517/azkoutput
@@ -82,7 +85,83 @@ azkaban-exec   flume            hivefile          metastore_db
 [11899517@bigdata4 ~]$ 
 ```
 
+## cmd02为例
+
+### job文件
+<li>新建空白文档，以.job后缀，内容如下
+
+```
+# cmd02.job
+# distinctUserId02
+type=command
+command=/home/hadoop/hadoop-current/bin/hadoop jar /mnt/home/11899517/had1205-distincUser.jar com.bigdata.etl.job.DistinctUserIdJob /user/11899517/input  /user/11899517/azkoutput02
+```
+
+<li>注意maven打包时，要把非执行的job类的main方法注释
+  
+```
+public static void main(String[] args) throws Exception {
+		int res=ToolRunner.run(new Configuration(), new ParseLogJob(),args);
+		System.exit(res);
+	}
+```
 
 
+### execute
 
+```
+[11899517@bigdata4 ~]$ hadoop fs -ls /user/11899517
+Found 11 items
+drwxr-x---   - 11899517 supergroup          0 2019-02-22 15:52 /user/11899517/azkinput
+drwxr-x---   - 11899517 supergroup          0 2019-02-22 15:08 /user/11899517/azkoutput
+drwxr-x---   - 11899517 supergroup          0 2018-12-31 00:59 /user/11899517/flume_data
+drwxr-x---   - 11899517 supergroup          0 2019-01-26 10:30 /user/11899517/hive
+drwxr-x---   - 11899517 supergroup          0 2019-01-06 16:46 /user/11899517/hivetable
+drwxr-x---   - 11899517 supergroup          0 2018-12-11 12:57 /user/11899517/input
+drwxr-x---   - 11899517 supergroup          0 2019-01-08 13:29 /user/11899517/mrlogs
+drwxr-x---   - 11899517 supergroup          0 2019-01-08 13:15 /user/11899517/output
+drwxr-x---   - 11899517 supergroup          0 2018-12-16 18:03 /user/11899517/resource
+drwxr-x---   - 11899517 supergroup          0 2019-01-25 23:02 /user/11899517/sqoop_test
+drwxr-x---   - 11899517 supergroup          0 2019-01-06 20:31 /user/11899517/weblog
+[11899517@bigdata4 ~]$ hadoop fs -ls /user/11899517
+Found 12 items
+drwxr-x---   - 11899517 supergroup          0 2019-02-22 15:52 /user/11899517/azkinput
+drwxr-x---   - 11899517 supergroup          0 2019-02-22 15:08 /user/11899517/azkoutput
+drwxr-x---   - 11899517 supergroup          0 2019-02-22 16:24 /user/11899517/azkoutput02
+drwxr-x---   - 11899517 supergroup          0 2018-12-31 00:59 /user/11899517/flume_data
+drwxr-x---   - 11899517 supergroup          0 2019-01-26 10:30 /user/11899517/hive
+drwxr-x---   - 11899517 supergroup          0 2019-01-06 16:46 /user/11899517/hivetable
+drwxr-x---   - 11899517 supergroup          0 2018-12-11 12:57 /user/11899517/input
+drwxr-x---   - 11899517 supergroup          0 2019-01-08 13:29 /user/11899517/mrlogs
+drwxr-x---   - 11899517 supergroup          0 2019-01-08 13:15 /user/11899517/output
+drwxr-x---   - 11899517 supergroup          0 2018-12-16 18:03 /user/11899517/resource
+drwxr-x---   - 11899517 supergroup          0 2019-01-25 23:02 /user/11899517/sqoop_test
+drwxr-x---   - 11899517 supergroup          0 2019-01-06 20:31 /user/11899517/weblog
+[11899517@bigdata4 ~]$ rm -rf azkoutput02
+[11899517@bigdata4 ~]$ ls
+000000_0         azkaban-web  had1205-0222.jar                            log0605-output                   part00000
+17monipdb.dat    azkoutput    had1205-distincUser.jar                     log0605.txt                      soft
+all_tar          derby.log    hive                                        metastore_db                     sqoop
+azkaban          flume        hivefile                                    mysql-connector-java-5.1.46.jar
+azkaban-exec     flumefile    indata.txt                                  mysql-connector-java-5.1.47.jar
+azkaban-plugins  flume_log    json-serde-1.3.6-jar-with-dependencies.jar  output
+[11899517@bigdata4 ~]$ hadoop fs -copyToLocal /user/11899517/azkoutput02 ~
+[11899517@bigdata4 ~]$ ls
+000000_0         azkaban-web  flume_log                json-serde-1.3.6-jar-with-dependencies.jar  output
+17monipdb.dat    azkoutput    had1205-0222.jar         log0605-output                              part00000
+all_tar          azkoutput02  had1205-distincUser.jar  log0605.txt                                 soft
+azkaban          derby.log    hive                     metastore_db                                sqoop
+azkaban-exec     flume        hivefile                 mysql-connector-java-5.1.46.jar
+azkaban-plugins  flumefile    indata.txt               mysql-connector-java-5.1.47.jar
+[11899517@bigdata4 ~]$ cd azkoutput02
+[11899517@bigdata4 azkoutput02]$ ls
+part00000  _SUCCESS
+[11899517@bigdata4 azkoutput02]$ tail -20f part00000
+{"user_id":"9981528165836645","action_path":["http://www.bigdataclass.com","http://www.bigdataclass.com/category","http://www.bigdataclass.com/my/9981528165836645","http://www.bigdataclass.com/my/9981528165836645","http://www.bigdataclass.com/category","http://www.bigdataclass.com","http://www.bigdataclass.com","http://www.bigdataclass.com/product/1527235438747966","http://www.bigdataclass.com/my/9981528165836645","http://www.bigdataclass.com/category","http://www.bigdataclass.com","http://www.bigdataclass.com","http://www.bigdataclass.com/my/9981528165836645","http://www.bigdataclass.com/product/1527235438751157","http://www.bigdataclass.com","http://www.bigdataclass.com/product/1527235438750963","http://www.bigdataclass.com/my/9981528165836645","http://www.bigdataclass.com/product/1527235438748291","http://www.bigdataclass.com/my/9981528165836645","http://www.bigdataclass.com/my/9981528165836645"]}
+省略很多行输出
+[11899517@bigdata4 ~]$ 
+```
 
+```
+
+```
