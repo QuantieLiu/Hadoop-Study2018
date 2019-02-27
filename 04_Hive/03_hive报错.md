@@ -1,4 +1,21 @@
 
+#### 建库报错
+原因：HADOOP_HOME用老师的，但是存放表数据的hdfs路径却使用了自己的
+解决方案：把hive安装目录的conf的hive-site.xml的hive.metastore.warehouse.dir改为hdfs:///user/11899517/f_test/hive/warehouse，换到老师的hdfs配置即可
+
+```
+[11899517@bigdata4 hive]$ hive
+Logging initialized using configuration in jar:file:/mnt/home/11899517/hive/lib/hive-common-1.2.2.jar!/hive-log4j.properties
+hive> show databases;
+OK
+bigdata
+default
+Time taken: 1.231 seconds, Fetched: 2 row(s)
+hive> create database bbt;
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. MetaException(message:Got exception: java.net.ConnectException Call From bigdata4.novalocal/127.0.0.1 to bigdata0:33601 failed on connection exception: java.net.ConnectException: 拒绝连接; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused)
+hive> 
+```
+
 #### NoViableAltException
 
 ``` 
