@@ -195,6 +195,7 @@ Wed Feb 27 15:16:21 CST 2019 WARN: Establishing SSL connection without server's 
 ```
 
 <li>Hive exited with status 88
+<li>元数据冲突
 
 ```
 [11899517@bigdata4 bin]$ ./sqoop import-all-tables --connect "jdbc:mysql://10.173.32.6:3306/sqoop?characterEncoding=UTF-8&useCursorFetch=true" --username root --password Gg/ru,.#5 -m 1 --hive-import --warehouse-dir /user/11899517/f_test/sqoop_all
