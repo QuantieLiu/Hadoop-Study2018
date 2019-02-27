@@ -1,103 +1,10 @@
-<li>mysql无响应
-
+<li>Output directory /sqoop already exists
+删除相应目录即可 
+hadoop fs -rmr  /sqoop
+	
 ```
-[11899517@bigdata4 bin]$ ./sqoop import-all-tables --connect jdbc:mysql://localhost:3306/sqoop --username root --password Gg/ru,.#5 -m 1 --hive-import --warehouse-dir /user/11899517/f_test/sqoop_all
-Warning: /mnt/home/11899517/sqoop/bin/../../hbase does not exist! HBase imports will fail.
-Please set $HBASE_HOME to the root of your HBase installation.
-Warning: /mnt/home/11899517/sqoop/bin/../../hcatalog does not exist! HCatalog jobs will fail.
-Please set $HCAT_HOME to the root of your HCatalog installation.
-Warning: /mnt/home/11899517/sqoop/bin/../../accumulo does not exist! Accumulo imports will fail.
-Please set $ACCUMULO_HOME to the root of your Accumulo installation.
-Warning: /mnt/home/11899517/sqoop/bin/../../zookeeper does not exist! Accumulo imports will fail.
-Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
-19/02/27 11:42:26 INFO sqoop.Sqoop: Running Sqoop version: 1.4.7
-19/02/27 11:42:26 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
-19/02/27 11:42:26 INFO tool.BaseSqoopTool: Using Hive-specific delimiters for output. You can override
-19/02/27 11:42:26 INFO tool.BaseSqoopTool: delimiters with --fields-terminated-by, etc.
-19/02/27 11:42:26 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
-Wed Feb 27 11:42:27 CST 2019 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
-19/02/27 11:42:27 INFO tool.CodeGenTool: Beginning code generation
-19/02/27 11:42:27 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `analysis` AS t LIMIT 1
-19/02/27 11:42:27 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `analysis` AS t LIMIT 1
-19/02/27 11:42:27 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /home/hadoop/hadoop-current
-注: /tmp/sqoop-11899517/compile/993cc57d86b76b4d928ef9f11219f131/analysis.java使用或覆盖了已过时的 API。
-注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
-19/02/27 11:42:30 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-11899517/compile/993cc57d86b76b4d928ef9f11219f131/analysis.jar
-19/02/27 11:42:30 WARN manager.MySQLManager: It looks like you are importing from mysql.
-19/02/27 11:42:30 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
-19/02/27 11:42:30 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
-19/02/27 11:42:30 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
-19/02/27 11:42:30 INFO mapreduce.ImportJobBase: Beginning import of analysis
-19/02/27 11:42:30 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
-19/02/27 11:42:31 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
-19/02/27 11:42:31 INFO client.RMProxy: Connecting to ResourceManager at bigdata0/10.173.32.5:8032
-Wed Feb 27 11:42:33 CST 2019 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
-19/02/27 11:42:33 INFO db.DBInputFormat: Using read commited transaction isolation
-19/02/27 11:42:33 INFO mapreduce.JobSubmitter: number of splits:1
-19/02/27 11:42:34 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1550731843098_0783
-19/02/27 11:42:34 INFO impl.YarnClientImpl: Submitted application application_1550731843098_0783
-19/02/27 11:42:34 INFO mapreduce.Job: The url to track the job: http://bigdata0.novalocal:8088/proxy/application_1550731843098_0783/
-19/02/27 11:42:34 INFO mapreduce.Job: Running job: job_1550731843098_0783
-19/02/27 11:42:41 INFO mapreduce.Job: Job job_1550731843098_0783 running in uber mode : false
-19/02/27 11:42:41 INFO mapreduce.Job:  map 0% reduce 0%
-19/02/27 11:42:45 INFO mapreduce.Job: Task Id : attempt_1550731843098_0783_m_000000_0, Status : FAILED
-Error: java.lang.RuntimeException: java.lang.RuntimeException: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at org.apache.sqoop.mapreduce.db.DBInputFormat.setDbConf(DBInputFormat.java:170)
-	at org.apache.sqoop.mapreduce.db.DBInputFormat.setConf(DBInputFormat.java:161)
-	at org.apache.hadoop.util.ReflectionUtils.setConf(ReflectionUtils.java:76)
-	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:136)
-	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:751)
-	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)
-	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:164)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at javax.security.auth.Subject.doAs(Subject.java:422)
-	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1758)
-	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:158)
-Caused by: java.lang.RuntimeException: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at org.apache.sqoop.mapreduce.db.DBInputFormat.getConnection(DBInputFormat.java:223)
-	at org.apache.sqoop.mapreduce.db.DBInputFormat.setDbConf(DBInputFormat.java:168)
-	... 10 more
-Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
-	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
-	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:990)
-	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:342)
-	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2188)
-	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2221)
-	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2016)
-	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:776)
-	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
-	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
-	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:386)
-	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330)
-	at java.sql.DriverManager.getConnection(DriverManager.java:664)
-	at java.sql.DriverManager.getConnection(DriverManager.java:247)
-	at org.apache.sqoop.mapreduce.db.DBConfiguration.getConnection(DBConfiguration.java:302)
-	at org.apache.sqoop.mapreduce.db.DBInputFormat.getConnection(DBInputFormat.java:216)
-	... 11 more
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-	at java.net.PlainSocketImpl.socketConnect(Native Method)
-	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
-	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
-	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
-	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
-	at java.net.Socket.connect(Socket.java:589)
-	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:211)
-	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:301)
-	... 27 more
+13/06/26 00:49:54 ERROR security.UserGroupInformation: PriviledgedActionException as:hadoop cause:org.apache.hadoop.mapred.FileAlreadyExistsException: Output directory /data/ehm_hosts already exists
+13/06/26 00:49:54 ERROR tool.ImportTool: Encountered IOException running import job: org.apache.hadoop.mapred.FileAlreadyExistsException: Output directory /data/ehm_hosts already exists
 ```
 
 <li>Hive exited with status 1
@@ -361,4 +268,106 @@ Wed Feb 27 12:08:09 CST 2019 WARN: Establishing SSL connection without server's 
 19/02/27 12:08:18 INFO hive.HiveImport: FAILED: SemanticException [Error 10072]: Database does not exist: azkaban_1019435825
 19/02/27 12:08:18 ERROR tool.ImportAllTablesTool: Encountered IOException running import job: java.io.IOException: Hive exited with status 88
 [11899517@bigdata4 bin]$ 
+```
+
+<li>mysql无响应
+
+```
+[11899517@bigdata4 bin]$ ./sqoop import-all-tables --connect jdbc:mysql://localhost:3306/sqoop --username root --password Gg/ru,.#5 -m 1 --hive-import --warehouse-dir /user/11899517/f_test/sqoop_all
+Warning: /mnt/home/11899517/sqoop/bin/../../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /mnt/home/11899517/sqoop/bin/../../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /mnt/home/11899517/sqoop/bin/../../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /mnt/home/11899517/sqoop/bin/../../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+19/02/27 11:42:26 INFO sqoop.Sqoop: Running Sqoop version: 1.4.7
+19/02/27 11:42:26 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+19/02/27 11:42:26 INFO tool.BaseSqoopTool: Using Hive-specific delimiters for output. You can override
+19/02/27 11:42:26 INFO tool.BaseSqoopTool: delimiters with --fields-terminated-by, etc.
+19/02/27 11:42:26 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+Wed Feb 27 11:42:27 CST 2019 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+19/02/27 11:42:27 INFO tool.CodeGenTool: Beginning code generation
+19/02/27 11:42:27 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `analysis` AS t LIMIT 1
+19/02/27 11:42:27 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `analysis` AS t LIMIT 1
+19/02/27 11:42:27 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /home/hadoop/hadoop-current
+注: /tmp/sqoop-11899517/compile/993cc57d86b76b4d928ef9f11219f131/analysis.java使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+19/02/27 11:42:30 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-11899517/compile/993cc57d86b76b4d928ef9f11219f131/analysis.jar
+19/02/27 11:42:30 WARN manager.MySQLManager: It looks like you are importing from mysql.
+19/02/27 11:42:30 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+19/02/27 11:42:30 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+19/02/27 11:42:30 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+19/02/27 11:42:30 INFO mapreduce.ImportJobBase: Beginning import of analysis
+19/02/27 11:42:30 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+19/02/27 11:42:31 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+19/02/27 11:42:31 INFO client.RMProxy: Connecting to ResourceManager at bigdata0/10.173.32.5:8032
+Wed Feb 27 11:42:33 CST 2019 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+19/02/27 11:42:33 INFO db.DBInputFormat: Using read commited transaction isolation
+19/02/27 11:42:33 INFO mapreduce.JobSubmitter: number of splits:1
+19/02/27 11:42:34 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1550731843098_0783
+19/02/27 11:42:34 INFO impl.YarnClientImpl: Submitted application application_1550731843098_0783
+19/02/27 11:42:34 INFO mapreduce.Job: The url to track the job: http://bigdata0.novalocal:8088/proxy/application_1550731843098_0783/
+19/02/27 11:42:34 INFO mapreduce.Job: Running job: job_1550731843098_0783
+19/02/27 11:42:41 INFO mapreduce.Job: Job job_1550731843098_0783 running in uber mode : false
+19/02/27 11:42:41 INFO mapreduce.Job:  map 0% reduce 0%
+19/02/27 11:42:45 INFO mapreduce.Job: Task Id : attempt_1550731843098_0783_m_000000_0, Status : FAILED
+Error: java.lang.RuntimeException: java.lang.RuntimeException: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at org.apache.sqoop.mapreduce.db.DBInputFormat.setDbConf(DBInputFormat.java:170)
+	at org.apache.sqoop.mapreduce.db.DBInputFormat.setConf(DBInputFormat.java:161)
+	at org.apache.hadoop.util.ReflectionUtils.setConf(ReflectionUtils.java:76)
+	at org.apache.hadoop.util.ReflectionUtils.newInstance(ReflectionUtils.java:136)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:751)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)
+	at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:164)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1758)
+	at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:158)
+Caused by: java.lang.RuntimeException: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at org.apache.sqoop.mapreduce.db.DBInputFormat.getConnection(DBInputFormat.java:223)
+	at org.apache.sqoop.mapreduce.db.DBInputFormat.setDbConf(DBInputFormat.java:168)
+	... 10 more
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:990)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:342)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2188)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2221)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2016)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:776)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:386)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at org.apache.sqoop.mapreduce.db.DBConfiguration.getConnection(DBConfiguration.java:302)
+	at org.apache.sqoop.mapreduce.db.DBInputFormat.getConnection(DBInputFormat.java:216)
+	... 11 more
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:211)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:301)
+	... 27 more
 ```
