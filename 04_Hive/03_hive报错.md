@@ -1,7 +1,7 @@
 <li>关键字占用报错
-到hive-site.xml的hive.support.sql11.reserved.keywords改为false，默认true
 
 ```
+--到hive-site.xml的hive.support.sql11.reserved.keywords改为false，默认true
   <property>
     <name>hive.support.sql11.reserved.keywords</name>
     <value>false</value>
@@ -10,6 +10,8 @@
       The default value is true.
     </description>
   </property>
+--更改配置文件后不一定能立刻生效，在hive窗口输入
+SET hive.support.sql11.reserved.keywords=false; 即可
 ```
 
 ```
