@@ -1,3 +1,10 @@
+#### truncate 不能删除外部表
+
+```
+hive> truncate table a_weblog;
+FAILED: SemanticException [Error 10146]: Cannot truncate non-managed table a_weblog.
+hive> 
+```
 
 #### 建库报错
 原因：HADOOP_HOME用老师的，但是存放表数据的hdfs路径却使用了自己的
