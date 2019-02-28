@@ -1,3 +1,26 @@
+<li>突然离线，易造成hive没能来得及删除自动创建的metastore_db文件夹(~home/bin/metastore_db),这时再次用hive命令进入，则会产生如下报错。
+
+解决办法：将metastore_db文件夹改名或者干脆删除，然后重新运行hive命令启动即可
+1)#rm -r metastore_db/
+2)# mv metastore_db/ metastore_db1/
+这样处理等同于清库！！！！！！
+
+```
+Caused by: java.sql.SQLException: Failed to start database 'metastore_db' with class loader sun.misc.Launcher$AppClassLoader@7ba4f24f, see the next exception for details.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 74 more
+Caused by: java.sql.SQLException: Another instance of Derby may have already booted the database /mnt/home/11899517/sqoop/bin/metastore_db.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	... 71 more
+Caused by: ERROR XSDB6: Another instance of Derby may have already booted the database /mnt/home/11899517/sqoop/bin/metastore_db.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.store.raw.data.BaseDataFileFactory.privGetJBMSLockOnDB(Unknown 
+```
+
 <li>hive版本过高
 
 ```
