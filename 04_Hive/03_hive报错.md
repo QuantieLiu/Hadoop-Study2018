@@ -1,3 +1,52 @@
+<li>关键字占用报错
+到hive-site.xml的hive.support.sql11.reserved.keywords改为false，默认true
+
+```
+  <property>
+    <name>hive.support.sql11.reserved.keywords</name>
+    <value>false</value>
+    <description>
+      This flag should be set to true to enable support for SQL2011 reserved keywords.
+      The default value is true.
+    </description>
+  </property>
+```
+
+```
+hive> desc order;
+FailedPredicateException(identifier,{useSQL11ReservedKeywordsForIdentifier()}?)
+	at org.apache.hadoop.hive.ql.parse.HiveParser_IdentifiersParser.identifier(HiveParser_IdentifiersParser.java:10924)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.identifier(HiveParser.java:45918)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.tabTypeExpr(HiveParser.java:15941)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.partTypeExpr(HiveParser.java:16279)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.descStatement(HiveParser.java:16818)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:2703)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:1653)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1112)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:202)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:397)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:309)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1145)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1193)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1082)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1072)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:213)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:165)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:376)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:736)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:681)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:621)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+FAILED: ParseException line 1:13 Failed to recognize predicate 'order'. Failed rule: 'identifier' in specifying table types
+hive> 
+```
+
 #### truncate 不能删除外部表
 
 ```
