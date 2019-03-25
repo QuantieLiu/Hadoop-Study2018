@@ -76,15 +76,14 @@
 因为引用从始至终都是指向同一个对象，你如果直接保存它们，那最后它们都指向最后一个输入记录。会影响最终计算结果而出错
 </p>
 
-'''
+```
   protected void reduce(KEYIN key, Iterable<VALUEIN> values, Context context
                         ) throws IOException, InterruptedException {
     for(VALUEIN value: values) {
       context.write((KEYOUT) key, (VALUEOUT) value);
     }
   }
-
-'''
+```
 
 <li>在for循环中，每次得到的value实际上都是指向的同一个对象，只是在每次迭代的时候，将新的值反序列化到这个对象中，以更新此对象的值
 
